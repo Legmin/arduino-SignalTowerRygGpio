@@ -7,16 +7,19 @@ namespace SignalTowerRygGpio {
 
 using SignalTowerRygPattern::ColorState;
 
+struct Pins {
+  int red = -1, yellow = -1, green = -1;
+};
+
 class Core {
  public:
-  const int pinRed, pinYellow, pinGreen;
-  Core(const int pinRed, const int pinYellow, const int pinGreen)
-      : pinRed(pinRed), pinYellow(pinYellow), pinGreen(pinGreen) {}
+  const Pins pins;
+  Core(Pins pins) : pins(pins) {}
 
   void begin(void (*_delay)(unsigned long) = delay) {
-    pinMode(pinRed, OUTPUT);
-    pinMode(pinYellow, OUTPUT);
-    pinMode(pinGreen, OUTPUT);
+    pinMode(pins.red, OUTPUT);
+    pinMode(pins.yellow, OUTPUT);
+    pinMode(pins.green, OUTPUT);
     setColors("g");
     _delay(200);
     setColors("y");
@@ -47,10 +50,10 @@ class Core {
   ColorState currentColorState;
 
   void setColorsByCurrentColorState() {
-    digitalWrite(pinRed, currentColorState.r);
-    digitalWrite(pinGreen, currentColorState.g);
-    digitalWrite(pinYellow, currentColorState.y);
+    digitalWrite(pins.red, currentColorState.r);
+    digitalWrite(pins.green, currentColorState.g);
+    digitalWrite(pins.yellow, currentColorState.y);
   }
 };
 
-}  // namespace SignalTowerGpio
+}  // namespace SignalTowerRygGpio
